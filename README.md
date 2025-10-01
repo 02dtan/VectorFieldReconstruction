@@ -1,0 +1,7 @@
+DT 10-01-2025
+
+This repository contains work performed during my rotation with the Magnasco Lab at The Rockefeller University, from 10-01-2025 to 12-19-2025. Here, we explore machine learning methods for vector field reconstruction and identification of underlying nonlinear dynamics from undersampled time-series data of arbitrary dimensionality. 
+
+I plan to first build toy data generators, which should represent multiple classes of well-characterized dynamical systems with low dimensionality (e.g., the tent map and the logistic map in 1D, or the Lorenz system in 3D). I intend these toy data classes to have the functionality of generating discrete time-series datasets of the x(t) and/or dx(t)/dt corresponding to the governing equations of each dynamical system, and for these generated data to be noised with arbitrary noise distributions and magnitudes. The goal is to have an implementation of a VFR method reproduce the forms of each system's governing equations, along with the correct coefficients for each term ("correct" signifying equivalence to the coefficient/parameter used to generate the data).
+
+I then plan to implement various methods for vector field reconstruction and identification of nonlinear dynamics from sparsely sampled time-series data. I may start with that set forth in Brunton, S. L., Proctor, J. L., and Kutz, J. N., PNAS 2016. The toy data are used to validate such implementations.
