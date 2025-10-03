@@ -18,7 +18,7 @@ font.size: 7
 xtick.major.pad: 4
 ytick.major.pad: 4
 figure.constrained_layout.use: True
-figure.dpi: 600
+figure.dpi: 300
 axes.grid: false
 legend.fontsize: 7
 legend.loc: best

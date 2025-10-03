@@ -59,7 +59,7 @@ def anosov_diffeo(X: np.ndarray, A: Any):
     
     # Set default value
     if A is None:
-        A = np.array([[2,1],[1,1]])
+        A = np.array([[2,1],[1,1]], dtype=np.float64)
         
     assert np.linalg.det(A) == 1
     return (A@X)%1
