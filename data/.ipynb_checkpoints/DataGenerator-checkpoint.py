@@ -65,9 +65,10 @@ class DataGenerator(object):
     def generate_next(self, Xn: np.ndarray):
         return self.evolve(Xn, self.map, self.map_args)
     
-    def generate_series(self):
-        X0 = self.X0
-        num_steps = self.num_steps
+    def generate_series(self, X0: np.ndarray = None, num_steps: int = None):
+        if X0 is None: X0 = self.X0
+        if num_steps is None: num_steps = self.num_steps
+
         X = np.empty((num_steps, *X0.shape))
         
         return self.evolve_all(X0, X, num_steps, self.map, self.map_args)
