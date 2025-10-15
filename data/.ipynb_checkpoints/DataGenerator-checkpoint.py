@@ -17,6 +17,8 @@
 
 import numpy as np
 import numba as nb
+from numba.typed import Dict
+from numba import types
 from typing import Callable, Any
 from data import maps
 
@@ -25,7 +27,7 @@ class DataGenerator(object):
     def __init__(self, X0: float | np.ndarray = 0.1,
                  num_steps: int = 100,
                  mapname: str = "anosov_diffeo",
-                 map_args: Any = None):
+                 **kwargs):
 
         self.X0 = np.array(X0)
             
@@ -36,7 +38,16 @@ class DataGenerator(object):
         except AttributeError:
             print(f'Name {map} is not defined in maps.py!')
 
-        self.map_args = map_args
+        if kwargs:
+            # Numba does not support Python's dynamically typed dict
+            self.map_args = Dict.empty(
+                key_type = types.unicode_type, # keys are strings
+                value_type = types.float64     # values are float64
+            )
+            for key, value in kwargs.items():
+                self.map_args[key] = value
+        else:
+            self.map_args = None
 
     @staticmethod
     @nb.njit(fastmath=True)
@@ -50,11 +61,10 @@ class DataGenerator(object):
     @nb.njit(fastmath=True)
     def evolve_all(X0: np.ndarray,              # Initial condition. If X0 passed as float to constructor, it is converted to (1,) np.ndarray. 
                    X: np.ndarray,               # Empty, but initialized, data array.
-                   num_steps: int,              # Number of steps to iterate with dyanmics governed by mapfn.
+                   num_steps: int,              # Number of steps to iterate with dynamics governed by mapfn.
                    mapfn: Callable[[Any], Any], # The map used to advance states in time, which is an attribute of data.maps.
-                   map_args: Any):              # Any additional arguments are passed to mapfn.
+                   map_args: Any):               # Any additional arguments are passed to mapfn.
         
-        # Create data array of dimensions ( num_steps * state_dimensions ): 0 axis indexes over timesteps.
         X[0] = X0
         for i in range(num_steps - 1):
             X[i+1] = mapfn(X[i], map_args)
